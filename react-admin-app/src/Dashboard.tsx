@@ -125,24 +125,24 @@ export const options = {
 
 // ------------
 class Dashboard extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {loaded: false, data: null };
-    }  
-    
-    fetchData(this) {
-      fetch(import.meta.env.VITE_SIMPLE_REST_URL+'/dashboard')
-        .then(response => response.json())
-        .then(json => this.setState({loaded: true, data: json}))
-        .catch(error => console.error(error))
-        .finally( () => {
-          setTimeout( this.fetchData(this), 500 );
-        });
-    }    
+  constructor(props) {
+    super(props);
+    this.state = {loaded: false, data: null };
+  }  
+  
+  fetchData(this) {
+    fetch(import.meta.env.VITE_SIMPLE_REST_URL+'/dashboard')
+      .then(response => response.json())
+      .then(json => this.setState({loaded: true, data: json}))
+      .catch(error => console.error(error))
+      .finally( () => {
+        setTimeout( this.fetchData(this), 500 );
+      });
+  }    
 
-    componentDidMount() {
-      this.fetchData(this);
-    }    
+  componentDidMount() {
+    this.fetchData(this);
+  }    
 
   render () {
     if ( !this.state.loaded ) {
@@ -154,28 +154,28 @@ class Dashboard extends React.Component {
         <Grid container spacing={2}>
           <Grid xs={6} md={8}>
             <Item>
-              <Line options={options} data={mocked_data}/>
+              <Line options={options} data={this.state.data.total_sales}/>
             </Item>
           </Grid>
           <Grid xs={6} md={4}>
             <Item>
-              <Line options={options} data={mocked_data} />        
+              <Line options={options} data={this.state.data.total_sales} />        
             </Item>
           </Grid>
 
           <Grid xs={6} md={4}>
             <Item>
-            <CardContent>{JSON.stringify(this.state.data.total)} Inventories</CardContent>
+            <CardContent>{JSON.stringify(this.state.data.consolidate.total)} Inventories</CardContent>
             </Item>
           </Grid>
           <Grid xs={4}>
             <Item>
-              <CardContent>{JSON.stringify(Object.keys(this.state.data.shoe_group).length)} Shoes type</CardContent>
+              <CardContent>{JSON.stringify(Object.keys(this.state.data.consolidate.shoe_group).length)} Shoes type</CardContent>
             </Item>
           </Grid>
           <Grid xs={4}>
             <Item>
-              <CardContent>{JSON.stringify(Object.keys(this.state.data.store_group).length)} Stores</CardContent>
+              <CardContent>{JSON.stringify(Object.keys(this.state.data.consolidate.store_group).length)} Stores</CardContent>
             </Item>
           </Grid>
         </Grid>  
