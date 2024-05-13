@@ -7,9 +7,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
-// TODO: Investigate issues with MUI + Vite
-// import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
-// import DeleteIcon from '@mui/icons-material/Delete';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -19,47 +16,33 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-// ----------- Chart
 import {
   Chart as ChartJS,
+  ArcElement,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  BarElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Line, Pie, Bar } from 'react-chartjs-2';
 
 ChartJS.register(
+  ArcElement,
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
+  LinearScale,
+  BarElement,
   Title,
   Tooltip,
   Legend
 );
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-export const mocked_data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => 830),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => 245),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ],
-};
 export const options = {
   responsive: true,
   plugins: {
@@ -68,62 +51,11 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Line Chart',
+      text: '',
     },
   },
 };
-// ----------- Chart
 
-// const Dashboard = () => {
-//   const [data, setData] = useState({});
-
-//   const fetchDashboardData = () => {
-//     fetch(import.meta.env.VITE_SIMPLE_REST_URL+'/dashboard')
-//       .then(response => response.json())
-//       .then(json => setData(json))
-//       .catch(error => console.error(error))
-//       .finally( () => {
-//         setTimeout( fetchDashboardData, 500 );
-//       });      
-//   }
-//   useEffect(() => {
-//     fetchDashboardData()
-//   }, []);  
-
-//   return (
-//     <Box sx={{ flexGrow: 1 }}>
-//       <Grid container spacing={2}>
-//         <Grid xs={6} md={8}>
-//           <Item>
-//             <Line options={options} data={mocked_data}/>
-//           </Item>
-//         </Grid>
-//         <Grid xs={6} md={4}>
-//           <Item>
-//             <Line options={options} data={mocked_data} />        
-//           </Item>
-//         </Grid>
-
-//         <Grid xs={6} md={4}>
-//           <Item>
-//           <CardContent>{JSON.stringify(data.total)} Inventories</CardContent>
-//           </Item>
-//         </Grid>
-//         <Grid xs={4}>
-//           <Item>
-//           </Item>
-//         </Grid>
-//         <Grid xs={4}>
-//           <Item>
-//           </Item>
-//         </Grid>
-//       </Grid>  
-//     </Box>
-//   )
-// };
-// export default Dashboard;
-
-// ------------
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -149,36 +81,91 @@ class Dashboard extends React.Component {
       return false;
     }
 
+    const linedata_per_sale = {
+      labels: this.state.data.group.latest_sale.map(function(item){ return item.date }),
+      datasets: [
+        {
+          label: 'Total Sales',
+          data: this.state.data.group.latest_sale.map(function(item){ return item.sales_number }),
+          borderColor: 'rgb(255, 99, 132)',
+          backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        }
+      ]
+    }
+
+    const piedata_per_store = {
+      labels: Object.keys(this.state.data.consolidate.store_group),
+      datasets: [
+        {
+          label: 'sales per store',
+          data: Object.values(this.state.data.consolidate.store_group),
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    const bardata_labels = Object.keys(this.state.data.consolidate.shoe_group);
+    const bardata_per_shoes = {
+      labels: bardata_labels,
+      datasets: [
+        {
+          label: 'Total of Shoes Sold',
+          data: Object.values(this.state.data.consolidate.shoe_group),
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        }
+      ],
+    };
+
     return (
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid xs={6} md={8}>
-            <Item>
-              <Line options={options} data={this.state.data.total_sales}/>
-            </Item>
-          </Grid>
-          <Grid xs={6} md={4}>
-            <Item>
-              <Line options={options} data={this.state.data.total_sales} />        
-            </Item>
-          </Grid>
-
-          <Grid xs={6} md={4}>
+        <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 6, md: 12 }}>
+          <Grid xs={2} md={4}>
             <Item>
             <CardContent>{JSON.stringify(this.state.data.consolidate.total)} Inventories</CardContent>
             </Item>
           </Grid>
-          <Grid xs={4}>
+          <Grid xs={2} md={4}>
             <Item>
               <CardContent>{JSON.stringify(Object.keys(this.state.data.consolidate.shoe_group).length)} Shoes type</CardContent>
             </Item>
           </Grid>
-          <Grid xs={4}>
+          <Grid xs={2} md={4}>
             <Item>
               <CardContent>{JSON.stringify(Object.keys(this.state.data.consolidate.store_group).length)} Stores</CardContent>
             </Item>
+          </Grid> 
+          <Grid xs={6} md={8}>
+            <Item>
+              <Line options={options} data={linedata_per_sale}/>
+            </Item>
           </Grid>
-        </Grid>  
+          <Grid xs={6} md={4}>
+            <Item>
+              <Pie data={piedata_per_store} />
+            </Item>
+          </Grid>
+          <Grid xs={6} md={8}>
+            <Item>
+            <Bar options={options} data={bardata_per_shoes} />
+            </Item>
+          </Grid>
+        </Grid> 
       </Box>
     )
   }

@@ -1,5 +1,61 @@
 # Shoe Store
 
+Here's my version of Shoe Store :raised_hands: A under-a-day app bulding using one of my favorites tools.
+
+## Installing & Running
+
+```shell
+bin/websocketd --port=8080 ruby inventory.rb
+cd server-api && bundle install && server-api/bin/rails s
+cd react-admin-app && npm install && npm start
+```
+
+## Tools
+
+* React v18
+* Reactchartjs v5
+* NodeJS v21.7.3
+* TS
+* Material Design UI
+* Vite 
+* React-Admin
+* Ruby v3.0.3
+* Rails v7
+* Sqlite3
+
+
+## Endpoints - REST API
+
+* http://localhost:3000/dashboard
+* http://127.0.0.1:3000/inventories?filter=%7B%7D&range=%5B10%2C19%5D&sort=%5B%22store%22%2C%22ASC%22%5D
+
+## Next steps
+
+* Better naming on variables and classes
+* For more endpoints, implement GraphQL
+* Code Refactoring
+* Normalization
+* TDD
+* Coding notation
+* More charts
+* Statistics/Math
+* Notification
+
+## Features
+
+* Realtime Charts
+* Standardized Style
+* Pagination
+* Table Sort
+* Table per Page
+* Light/Dark mode
+* Export CSV
+* Responsive
+* Backend and Frontend are Decoupled
+
+![screnshot](screen-shot-2024-05-12-at-8.17.53-pm.png)
+
+
 ## Synopsis
 
 Aldo Shoes is having a huge flash sale online. You provide support to the inventory department. They want to react real-time to various inventory problems as they arise.
