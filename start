@@ -1,0 +1,7 @@
+#! /bin/bash
+
+cd bin && websocketd --port=8080 ruby ../inventory.rb &
+
+server-api/bin/rails s
+
+cd react-admin-app && npm start

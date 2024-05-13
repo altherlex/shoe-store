@@ -1,0 +1,2 @@
+web: bin/rails server -p 3001
+websocket: ../bin/websocketd --port=8080 ruby ../inventory.rb
