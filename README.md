@@ -40,6 +40,8 @@ cd react-admin-app && npm install && npm start
 * More charts
 * Statistics/Math
 * Notification
+* Exclusive Server for Background Jobs
+* Parameterization of Constants
 
 ## Features
 
@@ -52,6 +54,24 @@ cd react-admin-app && npm install && npm start
 * Export CSV
 * Responsive
 * Backend and Frontend are Decoupled
+
+## Presentation
+
+* Stack Intro + Overview
+* How to run it
+* Backend:
+  - App structure
+  - ActiveJob
+* REST API:
+  - Endpoints
+  - Queries
+* Frontend:
+  - Features (React-Admin)
+  - Realtime Charts request to endpoints (React-Admin/simpleRestProvider) 
+  - Realtime Charts updatings
+  - ChartJS
+  - Material Design UI - components
+
 
 ![screnshot](screen-shot-2024-05-12-at-8.17.53-pm.png)
 
